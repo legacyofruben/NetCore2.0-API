@@ -6,6 +6,8 @@ using API_JabilBot.Models;
 using API_JabilBot.Models.Contexts;
 using API_JabilBot.Services;
 using API_JabilBot.Services.Interfaces;
+using API_JabilBot.Services.Interfaces.ServiceNow;
+using API_JabilBot.Services.ServiceNow;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,8 @@ namespace API_JabilBot
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IIncidentService, IncidentService>();
             services.AddScoped<IKnowledgeService, KnowledgeService>();
+            services.AddScoped<IQnAService, QnAService>();
+            services.AddScoped<IGeneralFunctionsService, GeneralFunctionsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
