@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 namespace API_JabilBot.Controllers
 {
     //[Produces("application/json")]
-    [Route("apibot/v1/Incident")]
+    [Route("apibot/v1/[controller]")]
     public class IncidentController : Controller
     {
 
@@ -36,15 +36,7 @@ namespace API_JabilBot.Controllers
         {
             try
             {
-                headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
-                {
-                    result = await iIncidentService.GetIncidenByNumberAsync(headerValues["server"].ToString(), inc);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
+                result = await iIncidentService.GetIncidenByNumberAsync(inc);
             }
             catch (Exception ex)
             {
@@ -59,14 +51,15 @@ namespace API_JabilBot.Controllers
         }
 
         [HttpGet(Name = "GetIncidentsByServer")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "config_item")]
         public async Task<IActionResult> GetChangeRequestsByServer()
         {
             try
             {
                 headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
+                if (headerValues.ContainsKey("config_item"))
                 {
-                    result = await iIncidentService.GetIncidentsByServerAsync(headerValues["server"].ToString());
+                    result = await iIncidentService.GetIncidentsByServerAsync(headerValues["config_item"].ToString());
                 }
                 else
                 {

@@ -8,8 +8,8 @@ namespace API_JabilBot.Services.Interfaces
 {
     public interface IIncidentService
     {
-        Task<JObject> GetIncidenByNumberAsync(string server, string inc);
+        Task<JObject> GetIncidenByNumberAsync(string inc);
 
-        Task<JObject> GetIncidentsByServerAsync(string server);
+        Task<JObject> GetIncidentsByServerAsync(string configItem);
     }
 }

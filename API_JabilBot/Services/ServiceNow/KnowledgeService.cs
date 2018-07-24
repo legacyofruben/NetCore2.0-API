@@ -28,7 +28,7 @@ namespace API_JabilBot.Services
         {
             this._appSettings = appsettings.Value;
         }
-        public async Task<JObject> GetKnowledgeByNumberAsync(string server, string kb)
+        public async Task<JObject> GetKnowledgeByNumberAsync(string kb)
         {
             
             try
@@ -38,9 +38,8 @@ namespace API_JabilBot.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 url = new StringBuilder(_appSettings.ServiceNow_BaseUrl);
-                url.Insert(url.ToString().IndexOf("://") + 3, server)
-                    .Append("kb_knowledge?number=")
-                    .Append(kb);
+                url.Append("kb_knowledge?number=")
+                   .Append(kb);
                 HttpResponseMessage response = await client.GetAsync(url.ToString());
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
@@ -84,7 +83,7 @@ namespace API_JabilBot.Services
             //return (resultBefore == null)? JObject.Parse(responseBody):resultBefore;
         }
 
-        public async Task<JObject> GetKnowledgesByServerAsync(string server, string description)
+        public async Task<JObject> GetKnowledgesByServerAsync(string description)
         {
             JObject userInfo = null;
             JObject resultBefore = null;
@@ -95,10 +94,9 @@ namespace API_JabilBot.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 url = new StringBuilder(_appSettings.ServiceNow_BaseUrl);
-                url.Insert(url.ToString().IndexOf("://") + 3, server)
-                    .Append("kb_knowledge?sysparm_limit=50&sysparm_fields=number,short_description&active=true&sysparm_query=short_descriptionCONTAINS")
-                    .Append(description.Trim())
-                    .Append("^ORDERBYnumber");
+                url.Append("kb_knowledge?sysparm_limit=50&sysparm_fields=number,short_description&active=true&sysparm_query=short_descriptionCONTAINS")
+                   .Append(description.Trim())
+                   .Append("^ORDERBYnumber");
                 //url.Insert(url.ToString().IndexOf("://") + 3, server)
                 //    .Append("kb_knowledge?sysparm_list_mode=grid&sysparm_query=sys_created_on>javascript:gs.daysAgoStart(30)&sysparm_offset=");
                 response = await client.GetAsync(url.ToString());

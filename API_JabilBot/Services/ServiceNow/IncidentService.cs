@@ -26,7 +26,7 @@ namespace API_JabilBot.Services
         {
             this._appSettings = appsettings.Value;
         }
-        public async Task<JObject> GetIncidenByNumberAsync(string server, string inc)
+        public async Task<JObject> GetIncidenByNumberAsync(string inc)
         {
             try
             {
@@ -35,9 +35,8 @@ namespace API_JabilBot.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 url = new StringBuilder(_appSettings.ServiceNow_BaseUrl);
-                url.Insert(url.ToString().IndexOf("://") + 3, server)
-                    .Append("incident?number=")
-                    .Append(inc);
+                url.Append("incident?number=")
+                   .Append(inc);
                 HttpResponseMessage response = await client.GetAsync(url.ToString());
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
@@ -63,7 +62,7 @@ namespace API_JabilBot.Services
             return JObject.Parse(responseBody);
         }
 
-        public async Task<JObject> GetIncidentsByServerAsync(string server)
+        public async Task<JObject> GetIncidentsByServerAsync(string configItem)
         {
             try
             {
@@ -72,14 +71,18 @@ namespace API_JabilBot.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 url = new StringBuilder(_appSettings.ServiceNow_BaseUrl);
-                url.Insert(url.ToString().IndexOf("://") + 3, server)
-                    .Append("incident?sysparm_list_mode=grid&sysparm_fields=sys_id,number,short_description,opened_at&active=true&sysparm_query=sys_created_on>javascript:gs.daysAgoStart(14)")
-                    .Append("^ORDERBYnumber");
-                response = await client.GetAsync(url.ToString());
+                url.Append("incident?sysparm_list_mode=grid&sysparm_fields=sys_id,number,short_description,opened_at&")
+                   .Append("sysparm_query=cmdb_ciSTARTSWITH")
+                   .Append(configItem)
+                   .Append("^sys_created_onONlast7days@javascript:gs.daysAgoStart(7)@javascript:gs.daysAgoEnd(0)")
+                   .Append("^ORDERBYnumber");
+                //response = await client.GetAsync(url.ToString());
+                response = client.GetAsync(url.ToString()).Result;
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
-                    responseBody = await response.Content.ReadAsStringAsync();
+                    //responseBody = await response.Content.ReadAsStringAsync();
+                    responseBody = response.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception ex)

@@ -15,6 +15,7 @@ namespace API_JabilBot.Models
         public string QnAEndpointHostName { get; set; }
         public string QnAKnowledgebaseId { get; set; }
         public string QnAAuthKey { get; set; }
+        public string ServiceNow_CMDB_CI { get; set; }
 
     }
 }

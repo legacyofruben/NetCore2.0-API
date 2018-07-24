@@ -44,6 +44,7 @@ namespace API_JabilBot
             services.AddMvc();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddResponseCaching();                                            // ResponseCaching
             services.AddScoped<IChangeRequestService, ChangeRequestService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IIncidentService, IncidentService>();
@@ -59,7 +60,7 @@ namespace API_JabilBot
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseResponseCaching();
             app.UseMvc();
         }
     }

@@ -44,7 +44,7 @@ namespace API_JabilBot.Controllers
                 headerValues = this.HttpContext.Request.Headers;
                 if (headerValues.ContainsKey("server"))
                 {
-                    result = await iKnowledgeService.GetKnowledgeByNumberAsync(headerValues["server"].ToString(), kb);
+                    result = await iKnowledgeService.GetKnowledgeByNumberAsync(kb);
 
                     link = result["result"][0]["author"]["link"].ToString();
                     userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
@@ -83,29 +83,21 @@ namespace API_JabilBot.Controllers
             string number = "";
             try
             {
-                headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
-                {
-                    result = await iKnowledgeService.GetKnowledgesByServerAsync(headerValues["server"].ToString(),"desc");
-                    resultString = result.ToString();
-                    resultBefore = new StringBuilder(result.ToString());
+                result = await iKnowledgeService.GetKnowledgesByServerAsync("desc");
+                resultString = result.ToString();
+                resultBefore = new StringBuilder(result.ToString());
 
-                    foreach (JObject i in result["result"])
-                    {
-                        link = i["author"]["link"].ToString();
-                        number = i["number"].ToString();
-                        userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
-                        name = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
-                        resultBefore.Insert(resultBefore.ToString().IndexOf(number) + number.Length + 2,
-                                            name);
-                    }
-
-                    result = JObject.Parse(resultBefore.ToString());
-                }
-                else
+                foreach (JObject i in result["result"])
                 {
-                    return Unauthorized();
+                    link = i["author"]["link"].ToString();
+                    number = i["number"].ToString();
+                    userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
+                    name = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
+                    resultBefore.Insert(resultBefore.ToString().IndexOf(number) + number.Length + 2,
+                                        name);
                 }
+
+                result = JObject.Parse(resultBefore.ToString());
 
             }
             catch (Exception ex)
@@ -135,7 +127,7 @@ namespace API_JabilBot.Controllers
                 headerValues = this.HttpContext.Request.Headers;
                 if (headerValues.ContainsKey("server"))
                 {
-                    result = await iKnowledgeService.GetKnowledgesByServerAsync(headerValues["server"].ToString(), description);
+                    result = await iKnowledgeService.GetKnowledgesByServerAsync(description);
                     //resultString = result.ToString();
                     //resultBefore = new StringBuilder(result.ToString());
 

@@ -8,9 +8,9 @@ namespace API_JabilBot.Services.Interfaces
 {
     public interface IKnowledgeService
     {
-        Task<JObject> GetKnowledgeByNumberAsync(string server, string kb);
+        Task<JObject> GetKnowledgeByNumberAsync(string kb);
 
-        Task<JObject> GetKnowledgesByServerAsync(string server, string description);
+        Task<JObject> GetKnowledgesByServerAsync(string description);
 
         Task<JObject> GetAuthorKnowledgeAsync(string link);
 
