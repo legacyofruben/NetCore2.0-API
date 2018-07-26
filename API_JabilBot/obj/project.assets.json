@@ -12869,11 +12869,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\1293384\\source\\repos\\API_JabilBot\\API_JabilBot\\API_JabilBot.csproj",
+      "projectUniqueName": "C:\\Users\\1293384\\Documents\\Jabil Assistant API\\API_JabilBot\\API_JabilBot.csproj",
       "projectName": "API_JabilBot",
-      "projectPath": "C:\\Users\\1293384\\source\\repos\\API_JabilBot\\API_JabilBot\\API_JabilBot.csproj",
+      "projectPath": "C:\\Users\\1293384\\Documents\\Jabil Assistant API\\API_JabilBot\\API_JabilBot.csproj",
       "packagesPath": "C:\\Users\\1293384\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\1293384\\source\\repos\\API_JabilBot\\API_JabilBot\\obj\\",
+      "outputPath": "C:\\Users\\1293384\\Documents\\Jabil Assistant API\\API_JabilBot\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
