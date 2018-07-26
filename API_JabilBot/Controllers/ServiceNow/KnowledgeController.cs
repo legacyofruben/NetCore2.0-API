@@ -41,24 +41,16 @@ namespace API_JabilBot.Controllers
             string author_name_username = "";
             try
             {
-                headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
-                {
-                    result = await iKnowledgeService.GetKnowledgeByNumberAsync(headerValues["server"].ToString(), kb);
+                result = await iKnowledgeService.GetKnowledgeByNumberAsync(kb);
 
-                    link = result["result"][0]["author"]["link"].ToString();
-                    userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
-                    resultBefore = new StringBuilder(result.ToString());
-                    author_name_username = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
-                    resultBefore.Insert(resultBefore.ToString().IndexOf(kb) + kb.Length + 2,
-                                        author_name_username);
-                    result = JObject.Parse(resultBefore.ToString());
+                link = result["result"][0]["author"]["link"].ToString();
+                userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
+                resultBefore = new StringBuilder(result.ToString());
+                author_name_username = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
+                resultBefore.Insert(resultBefore.ToString().IndexOf(kb) + kb.Length + 2,
+                                    author_name_username);
+                result = JObject.Parse(resultBefore.ToString());
 
-                }
-                else
-                {
-                    return Unauthorized();
-                }
             }
             catch (Exception ex)
             {
@@ -83,29 +75,21 @@ namespace API_JabilBot.Controllers
             string number = "";
             try
             {
-                headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
-                {
-                    result = await iKnowledgeService.GetKnowledgesByServerAsync(headerValues["server"].ToString(),"desc");
-                    resultString = result.ToString();
-                    resultBefore = new StringBuilder(result.ToString());
+                result = await iKnowledgeService.GetKnowledgesByServerAsync("desc");
+                resultString = result.ToString();
+                resultBefore = new StringBuilder(result.ToString());
 
-                    foreach (JObject i in result["result"])
-                    {
-                        link = i["author"]["link"].ToString();
-                        number = i["number"].ToString();
-                        userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
-                        name = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
-                        resultBefore.Insert(resultBefore.ToString().IndexOf(number) + number.Length + 2,
-                                            name);
-                    }
-
-                    result = JObject.Parse(resultBefore.ToString());
-                }
-                else
+                foreach (JObject i in result["result"])
                 {
-                    return Unauthorized();
+                    link = i["author"]["link"].ToString();
+                    number = i["number"].ToString();
+                    userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
+                    name = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
+                    resultBefore.Insert(resultBefore.ToString().IndexOf(number) + number.Length + 2,
+                                        name);
                 }
+
+                result = JObject.Parse(resultBefore.ToString());
 
             }
             catch (Exception ex)
@@ -122,39 +106,41 @@ namespace API_JabilBot.Controllers
         }
 
         [HttpPost]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "description")]
         public async Task<IActionResult> GetKnowledgesByDescription([FromForm] string description)
         {
-            JObject userInfo = null;
-            StringBuilder resultBefore = null;
-            string link = "";
-            string resultString = "";
-            string name = "";
-            string number = "";
+            //JObject userInfo = null;
+            //StringBuilder resultBefore = null;
+            //string link = "";
+            //string resultString = "";
+            //string name = "";
+            //string number = "";
             try
             {
-                headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
-                {
-                    result = await iKnowledgeService.GetKnowledgesByServerAsync(headerValues["server"].ToString(), description);
-                    //resultString = result.ToString();
-                    //resultBefore = new StringBuilder(result.ToString());
+                result = await iKnowledgeService.GetKnowledgesByServerAsync(description);
+                //headerValues = this.HttpContext.Request.Headers;
+                //if (headerValues.ContainsKey("server"))
+                //{
+                //    result = await iKnowledgeService.GetKnowledgesByServerAsync(description);
+                //    //resultString = result.ToString();
+                //    //resultBefore = new StringBuilder(result.ToString());
 
-                    //foreach (JObject i in result["result"])
-                    //{
-                    //    link = i["author"]["link"].ToString();
-                    //    number = i["number"].ToString();
-                    //    userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
-                    //    name = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
-                    //    resultBefore.Insert(resultBefore.ToString().IndexOf(number) + number.Length + 2,
-                    //                        name);
-                    //}
+                //    //foreach (JObject i in result["result"])
+                //    //{
+                //    //    link = i["author"]["link"].ToString();
+                //    //    number = i["number"].ToString();
+                //    //    userInfo = await iKnowledgeService.GetAuthorKnowledgeAsync(link);
+                //    //    name = "\"author_name\":\"" + userInfo["result"]["u_name_id"].ToString() + "\",";
+                //    //    resultBefore.Insert(resultBefore.ToString().IndexOf(number) + number.Length + 2,
+                //    //                        name);
+                //    //}
 
-                    //result = JObject.Parse(resultBefore.ToString());
-                }
-                else
-                {
-                    return Unauthorized();
-                }
+                //    //result = JObject.Parse(resultBefore.ToString());
+                //}
+                //else
+                //{
+                //    return Unauthorized();
+                //}
 
             }
             catch (Exception ex)

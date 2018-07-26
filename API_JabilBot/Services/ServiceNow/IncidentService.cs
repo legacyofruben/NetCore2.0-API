@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace API_JabilBot.Services
 {
-    public class ChangeRequestService : IChangeRequestService
+    public class IncidentService : IIncidentService
     {
-
         private readonly AppSettings _appSettings;
 
         private static HttpClient client;
@@ -23,11 +22,11 @@ namespace API_JabilBot.Services
         private static StringBuilder url;
         private static string responseBody;
 
-        public ChangeRequestService(IOptions<AppSettings> appsettings)
+        public IncidentService(IOptions<AppSettings> appsettings)
         {
             this._appSettings = appsettings.Value;
         }
-        public async Task<JObject> GetChangeRequestByNumberAsync(string server, string changeRequest)
+        public async Task<JObject> GetIncidenByNumberAsync(string inc)
         {
             try
             {
@@ -36,11 +35,10 @@ namespace API_JabilBot.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 url = new StringBuilder(_appSettings.ServiceNow_BaseUrl);
-                url.Insert(url.ToString().IndexOf("://") + 3, server)
-                    .Append("change_request?number=")
-                    .Append(changeRequest);
+                url.Append("incident?number=")
+                   .Append(inc);
                 HttpResponseMessage response = await client.GetAsync(url.ToString());
-                response.EnsureSuccessStatusCode(); 
+                response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
                     responseBody = await response.Content.ReadAsStringAsync();
@@ -56,44 +54,15 @@ namespace API_JabilBot.Services
             {
                 errorObj.StatusCode = response.StatusCode.ToString();
                 errorObj.Action = response.RequestMessage.RequestUri.LocalPath.ToString();
-                errorObj.Method = "GetChangeRequestByNumberAsync";
+                errorObj.Method = "GetIncidenByNumberAsync";
                 errorObj.Message = response.ReasonPhrase.ToString();
                 return JObject.Parse(JsonConvert.SerializeObject(errorObj));
             }
-            
+
             return JObject.Parse(responseBody);
         }
 
-        //public async Task<JObject> GetChangeRequestsAsync()
-        //{
-        //    try
-        //    {
-        //        client = new HttpClient();
-        //        var byteArray = Encoding.ASCII.GetBytes(_appSettings.UserSN + ":" + _appSettings.PassSN);
-        //        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-
-        //        HttpResponseMessage response = await client.GetAsync("https://jbldev03.service-now.com/api/now/table/change_request?sysparm_limit=10");
-        //        response.EnsureSuccessStatusCode();
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            responseBody = await response.Content.ReadAsStringAsync();
-        //        }
-        //        else
-        //        {
-        //            responseBody = response.StatusCode.ToString();
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        responseBody = @"[ Error: " + ex.Message.ToString() + "]";
-        //        throw;
-        //    }
-
-        //    return JObject.Parse(responseBody);
-        //}
-
-        public async Task<JObject> GetChangeRequestsByServerAsync(string server)
+        public async Task<JObject> GetIncidentsByServerAsync(string configItem)
         {
             try
             {
@@ -102,21 +71,25 @@ namespace API_JabilBot.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 url = new StringBuilder(_appSettings.ServiceNow_BaseUrl);
-                url.Insert(url.ToString().IndexOf("://") + 3, server)
-                    .Append("change_request?sysparm_list_mode=grid&sysparm_fields=sys_id,number,description,start_date,end_date,phase_state&active=true&sysparm_query=sys_created_on>javascript:gs.daysAgoStart(14)")
-                    .Append("^ORDERBYnumber");
-                response = await client.GetAsync(url.ToString());
+                url.Append("incident?sysparm_list_mode=grid&sysparm_fields=sys_id,number,short_description,opened_at&")
+                   .Append("sysparm_query=cmdb_ciSTARTSWITH")
+                   .Append(configItem)
+                   .Append("^sys_created_onONlast7days@javascript:gs.daysAgoStart(7)@javascript:gs.daysAgoEnd(0)")
+                   .Append("^ORDERBYnumber");
+                //response = await client.GetAsync(url.ToString());
+                response = client.GetAsync(url.ToString()).Result;
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
-                    responseBody = await response.Content.ReadAsStringAsync();
+                    //responseBody = await response.Content.ReadAsStringAsync();
+                    responseBody = response.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception ex)
             {
                 errorObj.StatusCode = response.StatusCode.ToString();
                 errorObj.Action = response.RequestMessage.RequestUri.LocalPath.ToString();
-                errorObj.Method = "GetChangeRequestsByServerAsync";
+                errorObj.Method = "GetIncidentByServerAsync";
                 errorObj.Message = response.ReasonPhrase.ToString();
                 return JObject.Parse(JsonConvert.SerializeObject(errorObj));
             }

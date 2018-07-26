@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 namespace API_JabilBot.Controllers
 {
     //[Produces("application/json")]
-    [Route("apibot/v1/ChangeRequest")]
+    [Route("apibot/v1/[controller]")]
     public class ChangeRequestController : Controller
     {
 
@@ -55,15 +55,8 @@ namespace API_JabilBot.Controllers
         {
             try
             {
-                headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
-                {
-                    result = await iChangeRequestService.GetChangeRequestByNumberAsync(headerValues["server"].ToString(), chg);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
+                result = await iChangeRequestService.GetChangeRequestByNumberAsync(chg);
+              
             }
             catch (Exception ex)
             {
@@ -78,16 +71,16 @@ namespace API_JabilBot.Controllers
         }
 
 
-
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "config_item")]
         [HttpGet(Name = "GetChangeRequestsByServer")]
         public async Task<IActionResult> GetChangeRequestsByServer()
         {
             try
             {
                 headerValues = this.HttpContext.Request.Headers;
-                if (headerValues.ContainsKey("server"))
+                if (headerValues.ContainsKey("config_item") && !headerValues["config_item"].ToString().Equals(""))
                 {
-                    result = await iChangeRequestService.GetChangeRequestsByServerAsync(headerValues["server"].ToString());
+                    result = await iChangeRequestService.GetChangeRequestsByServerAsync(headerValues["config_item"].ToString());
                 }
                 else
                 {

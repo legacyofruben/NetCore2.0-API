@@ -16,7 +16,6 @@ C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\bin\Debug\netcoreapp
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\bin\Debug\netcoreapp2.0\API_JabilBot.runtimeconfig.dev.json
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\bin\Debug\netcoreapp2.0\API_JabilBot.dll
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\bin\Debug\netcoreapp2.0\API_JabilBot.pdb
-C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.csprojResolveAssemblyReference.cache
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.Properties.Resources.resources
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.csproj.GenerateResource.cache
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.csproj.CoreCompileInputs.cache
@@ -24,3 +23,4 @@ C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.AssemblyInfo.cs
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.dll
 C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.pdb
+C:\Users\1293384\Documents\Jabil Assistant API\API_JabilBot\obj\Debug\netcoreapp2.0\API_JabilBot.csprojResolveAssemblyReference.cache

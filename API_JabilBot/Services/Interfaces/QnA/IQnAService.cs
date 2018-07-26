@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace API_JabilBot.Services.Interfaces
 {
-    public interface IIncidentService
+    public interface IQnAService
     {
-        Task<JObject> GetIncidenByNumberAsync(string server, string inc);
-
-        Task<JObject> GetIncidentsByServerAsync(string server);
+        Task<JObject> GetQnAAsync(JObject body);
     }
 }

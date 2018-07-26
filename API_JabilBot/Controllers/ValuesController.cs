@@ -12,11 +12,14 @@ namespace API_JabilBot.Controllers
     {
         // GET api/values
         [HttpGet]
+        [ActionName("Get")]
         public string Get()
         {
             //return new string[] { "value1", "value2" };
             return "API BOT is working !!!";
         }
-        
+
+
+
     }
 }
