@@ -32,13 +32,13 @@ namespace API_JabilBot.Controllers
 
         [HttpPost]
         [ActionName("GetQnA")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         //[AllowAnonymous]
         public async Task<IActionResult> GetQnA([FromBody] JObject question)
         {
             try
             {
-                JObject json = JObject.Parse(@"{question: '" + question + "'}");
-                result = await iQnAService.GetQnAAsync(json);
+                result = await iQnAService.GetQnAAsync(question);
             }
             catch (Exception ex)
             {
